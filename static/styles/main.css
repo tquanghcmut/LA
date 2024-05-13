@@ -1,16 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Roboto+Condensed:wght@400;700&display=swap');
 
 :root {
-  --color-focus: #4D90FE;
-  --color-text: #242424;
-  --color-button: #333333;
-  --color-background: white;
-  --color-input-background: white;
-  --color-links: #3C78C2;
-  --color-dark-background: whitesmoke;
-  --spatial-navigation-action: focus;
-  font-family: sans-serif;
-  color-scheme: light dark;
+    --color-focus: #4D90FE;
+    --color-text: #242424;
+    --color-button: #333333;
+    --color-background: white;
+    --color-input-background: white;
+    --color-links: #3C78C2;
+    --color-dark-background: whitesmoke;
+    --spatial-navigation-action: focus;
+    font-family: sans-serif;
+    color-scheme: light dark;
 }
 
 html {
@@ -19,31 +19,37 @@ html {
 }
 
 body {
-    margin: 0;
     font-family: 'Quicksand', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background: radial-gradient(#303b37, #1a1f1d);
     color: #e1eeeb;
     min-height: 100vh;
-}
-
-#header {
-    text-align: center;
-    margin: 3rem auto;
-}
-
-
-#header img {
-    width: 5rem;
-    height: 5rem;
-    object-fit: contain;
-    background-color: transparent;
+    width: 75rem;
+    margin: 0 auto;
 }
 
 h1 {
     font-size: 3rem;
     text-align: center;
+    margin: 0 auto 3rem auto;
+}
+
+form {
+    display: block;
+    justify-content: center;
+    width: 30em;
+    padding: 2rem;
+    margin: 0 auto;
+    border: 3px solid #041d18;
+    border-radius: 5px;
+    background: radial-gradient(#2a483e, #2d7256);
+}
+
+form h2 {
+    font-size: 1.5rem;
+    text-align: center;
+    margin: 0 auto 1rem auto;
 }
 
 #matrixInput {
@@ -52,9 +58,18 @@ h1 {
     gap: 1rem;
 }
 
+#btn {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
 button {
-    cursor: pointer;
+    display: block;
     padding: 0.25rem 0.75rem;
+    cursor: pointer;
+    font-family: 'Quicksand', sans-serif;
+    margin: 0 0.5rem;
 }
 
 input {
