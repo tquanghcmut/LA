@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matrix Input</title>
+<style>
+    input { width: 50px; text-align: center; }
+    table { margin-bottom: 10px; }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    var rows = 2;
+    var cols = 2;
+    var initialRows = 2;
+    var initialCols = 2;
+    var matrixData = new Array(rows).fill(0).map(() => new Array(cols).fill(''));
+
+    function createTable() {
+        var html = '<table>';
+        for (var i = 0; i < rows; i++) {
+            html += '<tr>';
+            for (var j = 0; j < cols; j++) {
+                html += `<td><input type="text" name="matrix[]" value="${matrixData[i][j]}" required /></td>`;
+            }
+            html += '</tr>';
+        }
+        html += '</table>';
+        $("#matrixInput").html(html);
+    }
+
+    function updateMatrixData() {
+        $('input').each(function(index) {
+            var r = Math.floor(index / cols);
+            var c = index % cols;
+            matrixData[r][c] = $(this).val();
+        });
+    }
+
+    function isColumnEmpty(col) {
+        return matrixData.every(row => row[col] === '');
+    }
+
+    function isRowEmpty(row) {
+        return matrixData[row].every(value => value === '');
+    }
+
+    $(document).on('keydown', 'input', function(e) {
+        var key = e.which;
+        var current = $('input').index(this);
+        var row = Math.floor(current / cols);
+        var col = current % cols;
+
+        if (key == 39) { // Right arrow
+            if (col + 1 < cols) {
+                $(this).closest('td').next().find('input').focus();
+            } else {
+                updateMatrixData();
+                cols++;
+                matrixData.forEach(row => row.push(''));
+                createTable();
+                $('input').eq(row * cols + col + 1).focus();
+            }
+        } else if (key == 37) { // Left arrow
+            if (col > 0) {
+                $(this).closest('td').prev().find('input').focus();
+            } else if (col === cols - 1 && cols > initialCols && isColumnEmpty(col)) {
+                updateMatrixData();
+                cols--;
+                matrixData.forEach(row => row.pop());
+                createTable();
+                $('input').eq(row * cols - 1).focus(); // Focus on the last input of the same row
+            }
+        } else if (key == 40) { // Down arrow
+            if (row + 1 < rows) {
+                $('input').eq(current + cols).focus();
+            } else {
+                updateMatrixData();
+                rows++;
+                matrixData.push(new Array(cols).fill(''));
+                createTable();
+                $('input').eq(current + cols).focus();
+            }
+        } else if (key == 38) { // Up arrow
+            if (row > 0) {
+                $('input').eq(current - cols).focus();
+            } else if (row === rows - 1 && rows > initialRows && isRowEmpty(row)) {
+                updateMatrixData();
+                rows--;
+                matrixData.pop();
+                createTable();
+                $('input').eq((rows - 1) * cols + col).focus(); // Focus on the same column of the last row
+            }
+        }
+    });
+
+    createTable();
+});
+</script>
+</head>
+<body>
+<form action="/decompose" method="post">
+    <div id="matrixInput"></div>
+    <button type="submit">Decompose</button>
+</form>
+</body>
+</html>
