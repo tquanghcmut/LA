@@ -19,13 +19,14 @@ html {
 }
 
 body {
-    margin: 0;
     font-family: 'Quicksand', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background: radial-gradient(#303b37, #1a1f1d);
     color: #e1eeeb;
     min-height: 100vh;
+    width: 75rem;
+    margin: 0 auto;
 }
 
 #header {
@@ -46,6 +47,15 @@ h1 {
     text-align: center;
 }
 
+form {
+    display: block;
+    justify-content: center;
+    gap: 1rem;
+    width: 30em;
+    margin: 0 auto;
+    border: 3px solid black;
+}
+
 #matrixInput {
     display: flex;
     justify-content: center;
@@ -55,6 +65,7 @@ h1 {
 button {
     cursor: pointer;
     padding: 0.25rem 0.75rem;
+    float: left;
 }
 
 input {

@@ -4,20 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Matrix Input</title>
-    <style>
-        input {
-            width: 50px;
-            text-align: center;
-        }
-
-        table {
-            margin-bottom: 10px;
-        }
-
-        button {
-            margin-top: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
@@ -26,10 +13,6 @@
             var initialRows = 2;
             var initialCols = 2;
             var matrixData = new Array(rows).fill(0).map(() => new Array(cols).fill(''));
-
-            function createInitialMatrixData() {
-                return new Array(initialRows).fill(0).map(() => new Array(initialCols).fill(''));
-            }
 
             function createTable() {
                 var html = '<table>';
@@ -60,103 +43,52 @@
                 return matrixData[row].every(value => value === '');
             }
 
-            function removeColumn() {
-                if (cols > initialCols && isColumnEmpty(cols - 1)) {
-                    cols--;
-                    matrixData.forEach(row => row.pop());
-                    createTable();
-                    // Set focus to the last input in the new last column
-                    if (cols > 0 && rows > 0) {
-                        $('input').eq((rows - 1) * cols + cols - 1).focus();
-                    }
-                }
-            }
-
-            function removeRow() {
-                if (rows > initialRows && isRowEmpty(rows - 1)) {
-                    rows--;
-                    matrixData.pop();
-                    createTable();
-                    // Set focus to the last input in the new last row
-                    if (rows > 0 && cols > 0) { //(2,3)
-                        $('input').eq((rows - 1) * cols + cols - 1).focus();
-                    }
-                }
-            }
-
-            function resetMatrix() {
-                rows = initialRows;
-                cols = initialCols;
-                matrixData = createInitialMatrixData();
-                createTable();
-            }
-
-            $('#clearMatrix').click(function () {
-                resetMatrix();
-            });
             $(document).on('keydown', 'input', function (e) {
                 var key = e.which;
                 var current = $('input').index(this);
                 var row = Math.floor(current / cols);
                 var col = current % cols;
 
-                switch (key) {
-                    case 39: // Right arrow
-                        if (col + 1 < cols) {
-                            $(this).closest('td').next().find('input').focus();
-                        } else {
-                            updateMatrixData();
-                            cols++;
-                            matrixData.forEach(row => row.push(''));
-                            createTable();
-                            $('input').eq(row * cols + col + 1).focus();
-                        }
-                        break;
-                    case 37: // Left arrow
-                        if (col > 0) {
-                            $(this).closest('td').prev().find('input').focus();
-                        }
+                if (key == 39) { // Right arrow
+                    if (col + 1 < cols) {
+                        $(this).closest('td').next().find('input').focus();
+                    } else {
                         updateMatrixData();
-                        if (cols > initialCols && isColumnEmpty(cols - 1)) {
-                            cols--;
-                            matrixData.forEach(row => row.pop());
-                            createTable();
-                            // Set focus to the last input in the new last column
-                            if (cols > 0 && rows > 0) {
-                                {#$('input').eq((rows - 1) * cols + cols - 1).focus();#}
-                                $('input').eq(row * cols + col - 1).focus();
-
-                            }
-                        }
-                        break;
-                    case 40: // Down arrow
-                        if (row + 1 < rows) {
-                            $('input').eq(current + cols).focus();
-                        } else {
-                            updateMatrixData();
-                            rows++;
-                            matrixData.push(new Array(cols).fill(''));
-                            createTable();
-                            $('input').eq(current + cols).focus();
-                        }
-                        break;
-                    case 38: // Up arrow
-                        if (row > 0) {
-                            $('input').eq(current - cols).focus();
-                        }
+                        cols++;
+                        matrixData.forEach(row => row.push(''));
+                        createTable();
+                        $('input').eq(row * cols + col + 1).focus();
+                    }
+                } else if (key == 37) { // Left arrow
+                    if (col > 0) {
+                        $(this).closest('td').prev().find('input').focus();
+                    } else if (col === cols - 1 && cols > initialCols && isColumnEmpty(col)) {
                         updateMatrixData();
-                        if (rows > initialRows && isRowEmpty(rows - 1)) {
-                            rows--;
-                            matrixData.pop();
-                            createTable();
-                            // Set focus to the last input in the new last row
-                            if (rows > 0 && cols > 0) { //(2,3)
-                                {#$('input').eq((rows - 1) * cols + cols - 1).focus();#}
-                                $('input').eq(current - cols).focus();
-                            }
-                        }
-
-                        break;
+                        cols--;
+                        matrixData.forEach(row => row.pop());
+                        createTable();
+                        $('input').eq(row * cols - 1).focus(); // Focus on the last input of the same row
+                    }
+                } else if (key == 40) { // Down arrow
+                    if (row + 1 < rows) {
+                        $('input').eq(current + cols).focus();
+                    } else {
+                        updateMatrixData();
+                        rows++;
+                        matrixData.push(new Array(cols).fill(''));
+                        createTable();
+                        $('input').eq(current + cols).focus();
+                    }
+                } else if (key == 38) { // Up arrow
+                    if (row > 0) {
+                        $('input').eq(current - cols).focus();
+                    } else if (row === rows - 1 && rows > initialRows && isRowEmpty(row)) {
+                        updateMatrixData();
+                        rows--;
+                        matrixData.pop();
+                        createTable();
+                        $('input').eq((rows - 1) * cols + col).focus(); // Focus on the same column of the last row
+                    }
                 }
             });
 
@@ -165,10 +97,10 @@
     </script>
 </head>
 <body>
+<h1>Matrix Decomposition using Givens Rotation</h1>
 <form action="/decompose" method="post">
     <div id="matrixInput"></div>
     <button type="submit">Decompose</button>
-    <button type="button" id="clearMatrix">Clear</button>
 </form>
 </body>
 </html>
