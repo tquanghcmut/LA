@@ -9,6 +9,7 @@ def givensrotation(a, b):
     sin = -b / hypot
     return cos, sin
 
+
 def qr_givens(A):
     m, n = A.shape
     R = A.copy()
@@ -19,6 +20,7 @@ def qr_givens(A):
             R[i], R[j] = (R[i] * cos) + (R[j] * (-sin)), (R[i] * sin) + (R[j] * cos)
             Q[:, i], Q[:, j] = (Q[:, i] * cos) + (Q[:, j] * (-sin)), (Q[:, i] * sin) + (Q[:, j] * cos)
     return Q, R
+
 
 @app.route('/')
 def index():
