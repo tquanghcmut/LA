@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Decomposition Result</title>
+    <meta charset="UTF-8">
+    <title>Decomposition Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/result.css') }}">
+
 </head>
 <body>
-<h2>Q Matrix</h2>
-<pre>{{ Q }}</pre>
-<h2>R Matrix</h2>
-<pre>{{ R }}</pre>
-<h2>Q * Q.T</h2>
-<pre>{{ qqt }}</pre>
-<h2>Q.T * Q</h2>
-<pre>{{ qtq }}</pre>
+<h1>Q Matrix</h1>
+<div>{{ Q|safe }}</div>
+<h1>R Matrix</h1>
+<div>{{ R|safe }}</div>
+<h1>Q * Q.T</h1>
+<div>{{ qqt|safe }}</div>
+<h1>Q.T * Q</h1>
+<div>{{ qtq|safe }}</div>
 </body>
 </html>
