@@ -66,3 +66,22 @@ div {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 5px;
 }
+
+span {
+    display: flex;
+    justify-content: center;
+}
+
+#home {
+    display: block;
+    padding: 0.25rem 0.75rem;
+    cursor: pointer;
+    font-family: 'Quicksand', sans-serif;
+    margin: 0.5rem;
+}
+
+a {
+    font-size: 1rem;
+    text-decoration: none;
+    color: #e1eeeb;
+}
